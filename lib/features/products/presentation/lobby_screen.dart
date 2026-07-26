@@ -32,10 +32,18 @@ class LobbyScreen extends StatelessWidget {
       ),
       body: BlocBuilder<ProductsCubit, ProductsState>(
         builder: (context, state) {
-          if (state is ProductsLoading) {
+          if (state is ProductsInitial) {
+            context.read<ProductsCubit>().getProducts();
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is ProductsLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ProductsError) {
-            return Center(child: Text('Error: ${state.message}'));
+            return Center(
+              child: Text(
+                'Error: ${state.message}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
           } else if (state is ProductsLoaded) {
             return GridView.builder(
               padding: const EdgeInsets.all(16),
@@ -63,6 +71,17 @@ class LobbyScreen extends StatelessWidget {
                             product.image,
                             fit: BoxFit.cover,
                             width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.image_not_supported_outlined,
+                                      size: 40,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
                           ),
                         ),
                         Padding(
