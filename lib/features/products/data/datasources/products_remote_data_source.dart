@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import '../../../../core/api/dio_helper.dart';
 import '../product_model.dart';
 

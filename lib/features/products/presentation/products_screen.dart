@@ -70,10 +70,14 @@ class ProductsScreen extends StatelessWidget {
                         height: 50,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.image_not_supported),
+                            const Icon(
+                              Icons.image_not_supported,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
                       ),
                       title: Text(
-                        product.title ?? '',
+                        product.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

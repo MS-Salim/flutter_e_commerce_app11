@@ -14,7 +14,7 @@ class ProductDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.title ?? 'تفاصيل المنتج'),
+        title: Text(product.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart_checkout),
@@ -45,10 +45,18 @@ class ProductDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              product.image ?? '',
+              product.image,
               fit: BoxFit.cover,
               width: double.infinity,
               height: 300,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.network(
+                  'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 300,
+                );
+              },
             ),
             Padding(
               padding: const EdgeInsets.all(24.0),
@@ -60,7 +68,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          product.title ?? 'بدون اسم',
+                          product.title,
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -98,7 +106,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    product.description ?? 'لا يوجد وصف',
+                    product.description,
                     style: const TextStyle(
                       fontSize: 16,
                       height: 1.5,
@@ -112,7 +120,6 @@ class ProductDetailsScreen extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         context.read<CartCubit>().addToCart(product);
-
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('${product.title} added to cart!'),

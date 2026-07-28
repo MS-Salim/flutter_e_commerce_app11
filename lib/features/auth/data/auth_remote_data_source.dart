@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/api/dio_helper.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<Response> login(String email, String password);
+  Future<String> login(String email, String password);
   Future<Response> signUp(
     String firstName,
     String lastName,
@@ -14,11 +14,26 @@ abstract class AuthRemoteDataSource {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
-  Future<Response> login(String email, String password) async {
-    return await DioHelper.dio.post(
-      'api/auth/login',
-      data: {'email': email, 'password': password},
-    );
+  Future<String> login(String email, String password) async {
+    try {
+      final response = await DioHelper.dio.post(
+        'api/auth/login',
+        data: {'email': email, 'password': password},
+      );
+
+      print('=== API RESPONSE ===: ${response.data}');
+
+      final token = response.data['token'];
+
+      if (token != null) {
+        return token.toString();
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print('=== API ERROR ===: $e');
+      throw Exception('Login Failed: $e');
+    }
   }
 
   @override

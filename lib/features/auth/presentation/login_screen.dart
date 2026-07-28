@@ -23,9 +23,8 @@ class LoginScreen extends StatelessWidget {
                 backgroundColor: Colors.green,
               ),
             );
-            context.go('/products');
+            context.go('/home');
           } else if (state is AuthError) {
-            // لو الإيرور فيه كلمة "not verified"، هنوديه أوتوماتيك لشاشة التفعيل
             if (state.error.toLowerCase().contains('not verified')) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -33,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.orange,
                 ),
               );
-              context.push('/verify'); // تحويل لشاشة التفعيل
+              context.push('/verify');
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

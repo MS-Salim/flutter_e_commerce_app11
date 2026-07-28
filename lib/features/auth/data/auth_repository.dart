@@ -5,8 +5,8 @@ class AuthRepository {
 
   AuthRepository({required this.remoteDataSource});
 
-  Future<void> login(String email, String password) async {
-    await remoteDataSource.login(email, password);
+  Future<String> login(String email, String password) async {
+    return await remoteDataSource.login(email, password);
   }
 
   Future<void> signUp(

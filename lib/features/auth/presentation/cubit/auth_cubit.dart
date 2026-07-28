@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:my_store_app/core/helpers/local_storage_helper.dart';
 import '../../data/auth_repository.dart';
 import 'auth_state.dart';
 
@@ -11,7 +12,8 @@ class AuthCubit extends Cubit<AuthState> {
   void login(String email, String password) async {
     emit(AuthLoading());
     try {
-      await authRepository.login(email, password);
+      final response = await authRepository.login(email, password);
+      await LocalStorageHelper.saveData(key: 'token', value: response);
       emit(AuthSuccess("تم تسجيل الدخول بنجاح"));
     } catch (e) {
       if (e is DioException) {
